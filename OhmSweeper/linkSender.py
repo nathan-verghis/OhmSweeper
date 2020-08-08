@@ -15,3 +15,6 @@ def sendMessage(message):
     print(chatBox)
     chatBox.send_keys(message + '\n')
 
+def getLink():
+    grabify = input("Enter a grabify link\n")
+    sendMessage(grabify)
