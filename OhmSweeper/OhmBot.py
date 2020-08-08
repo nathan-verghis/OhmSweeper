@@ -20,9 +20,9 @@ class OhmBot:
     def is_human(self):
         pass
 
-    def communicate():
-        pass
-
+    def communicate(self, message):
+        chatBox = self.bot.find_element_by_tag_name('textarea')
+        chatBox.send_keys(message + '\n')
 
     def identify_predator():
         pass
@@ -56,3 +56,6 @@ while True:
     time.sleep(1)
     if (bot.chat_is_over() == True):
         bot.newchat()
+    message = input("Enter message")
+    bot.communicate(message)
+    
