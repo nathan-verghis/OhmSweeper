@@ -1,8 +1,8 @@
 from OhmSweeper import OhmSweeper
 
+exit_key = False
 
-ch = OhmSweeper.OhmBot()
-ch.newchat()
-ch.communicate()
-ch.newchat()
-
+while not exit_key:
+    ch = OhmSweeper.OhmBot()
+    ch.newchat()
+    ch.communicate()
