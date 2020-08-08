@@ -2,7 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 
-'''
+
 class OhmBot:
     def __init__(self):
         self.bot = webdriver.Chrome()
@@ -11,6 +11,9 @@ class OhmBot:
     def get_reply(self):
         logbox = self.bot.find_elements_by_class_name("logbox")
         print(logbox)
+
+    def get_last_input(self):
+        return self.bot.find_elements_by_class_name("logitem")[-1].text
 
     def is_human(self):
 
@@ -22,6 +25,15 @@ class OhmBot:
 
 
     def upload_predator:
+
+    def chat_is_over(self):
+        possible_endings = \
+            ["Great chat? Save the log: Get a link • Select all • Or post log to: Facebook • Tumblr • Twitter • reddit",
+             "Stranger has disconnected", "Find strangers with common interests (Enable)"]
+        if self.get_last_input() in possible_endings:
+            return True
+        else:
+            return False
 
 
 def type_speed(message, time):
@@ -40,8 +52,8 @@ while connected:
     if typing:
         timer.start
     if message_received:
-        timer.stop'''
-
+        timer.stop
+'''
 bot = webdriver.Firefox()
 possible_endings =\
     ["Great chat? Save the log: Get a link • Select all • Or post log to: Facebook • Tumblr • Twitter • reddit",
@@ -58,4 +70,4 @@ while bot.find_elements_by_class_name("logitem")[-1].text not in possible_ending
 
 logbox.remove(logbox[len(logbox) - 1])
 for chat in logbox:
-    print(chat)
+    print(chat)'''
