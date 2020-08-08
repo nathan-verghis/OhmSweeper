@@ -1,51 +1,49 @@
 from selenium import webdriver
-from webdriver_manager.chrome import ChromeDriverManager
+# from webdriver.manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
-import linkSender as sender
-from OhmSweeper import Functions
+# import linkSender as sender
+from OhmSweeper.OhmSweeper import Functions
 from random import randint
 
 
 class OhmBot:
     def __init__(self):
-        self.bot = webdriver.Chrome(ChromeDriverManager().install())
+        self.bot = webdriver.Firefox()
         self.log_history = []
         self.dirty_response_counter = 0
         self.clean_response_counter = 0
         self.link = ""
 
     def store_reply(self):
-        if self.log_history[-1] != self.bot.find_elements_by_class_name("logitem")[-1].text:
+        if len(self.log_history) > 2:
+            if self.log_history[-1] != self.bot.find_elements_by_class_name("logitem")[-1].text and\
+                    self.bot.find_elements_by_class_name("logitem")[-1].text != 'Stranger is typing...':
+                self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
+        else:
             self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
 
     def get_last_input(self):
         return self.log_history[-1]
 
-    def is_human(self, type_time):
-        if Functions.type_speed(self.get_last_input(), type_time) > 12.5:
-            return False
-        else:
-            return True
-
-    def type_time(self, time1):
-        self.wait_for_message()
-        time_end = float(time.time())
-        return time_end - time1
-
     def wait_for_message(self):
-        while self.log_history[-2] != "Stranger is typing...":
-            pass
+        print(len(self.log_history))
+        if len(self.log_history) > 2:
+            while self.bot.find_elements_by_class_name("statuslog"):
+                self.store_reply()
+                pass
+        else:
+            while len(self.log_history) < 2:
+                self.store_reply()
+                pass
 
     def communicate(self):
         while not self.chat_is_over():
-            current_message = self.bot.find_elements_by_class_name("logitem")[-1].text
+            self.wait_for_message()
+            print(self.log_history)
             self.store_reply()
-            if current_message == "Stranger is typing...":
-                time_start = float(time.time())
-                type_time = self.type_time(time_start)
-                if not self.is_human(type_time):
-                    break
+            time.sleep(2)
+            print("yeah")
             if self.is_predator():
                 response = self.predator_response()
                 self.send_message(response)
@@ -57,7 +55,7 @@ class OhmBot:
                 if self.clean_response_counter > 2:
                     break
 
-    def identify_predator():
+    def identify_predator(self):
         # kal
         pass
 
@@ -66,6 +64,7 @@ class OhmBot:
         chatBox.send_keys(message + '\n')
 
     def predator_response(self):
+        # This is meant to bait predators to click the link so we can ip grab them
         self.dirty_response_counter += 1
         if self.dirty_response_counter == 1:
             return "lol, maybe..."
@@ -78,7 +77,7 @@ class OhmBot:
 
     def is_predator(self):
         red_flags = ["sex", "sexy", "nudes", "pics", "touch", "tits", "pussy", "address", "suck", "lick",
-                     "load", "ass", "horny", "nude", "pic"]
+                     "load", "ass", "horny", "nude", "pic", "dick", "cock", "cunt", "wearing"]
         if self.get_last_input().lower() in red_flags:
             return True
         else:
@@ -86,7 +85,8 @@ class OhmBot:
 
     def calculate_response(self):
         random_age = randint(13, 16)
-        standard_questions = {"m": "f" + str(random_age), "asl": "im " + str(random_age) + "f lol but idk you"}
+        standard_questions = {"m": "f" + str(random_age), "asl": "im " + str(random_age) + "f lol but idk you",
+                              "age": str(random_age) + " hbu", "from": "idk you tho", "wyd": "nm hbu"}
         for sq in standard_questions:
             if sq in self.get_last_input().lower():
                 return standard_questions[sq]
@@ -98,15 +98,16 @@ class OhmBot:
         if self.clean_response_counter == 3:
             return "lol, i gtg"
 
-    def upload_predator():
+    def upload_predator(self):
         pass
 
     def chat_is_over(self):
         possible_endings = \
             ["Great chat? Save the log: Get a link • Select all • Or post log to: Facebook • Tumblr • Twitter • reddit",
              "Stranger has disconnected", "Find strangers with common interests (Enable)"]
-        if self.get_last_input() in possible_endings:
-            return True
+        if len(self.log_history) > 1:
+            if self.get_last_input() in possible_endings:
+                return True
         else:
             return False
 
@@ -115,9 +116,7 @@ class OhmBot:
         textButton = self.bot.find_element_by_xpath("//img[@id='textbtn']")
         textButton.click()
         time.sleep(3)
-        
-        
-        
+
         
 if __name__ == "__main__":
     bot = OhmBot()
