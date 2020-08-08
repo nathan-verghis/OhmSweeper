@@ -62,7 +62,8 @@ class OhmBot:
         pass
 
     def send_message(self, message):
-        pass
+        chatBox = self.bot.find_element_by_tag_name('textarea')
+        chatBox.send_keys(message + '\n')
 
     def predator_response(self):
         self.dirty_response_counter += 1
