@@ -8,15 +8,24 @@ class OhmBot:
         self.bot = webdriver.Chrome()
         self.log_history = []
 
-    def get_reply(self):
-        logbox = self.bot.find_elements_by_class_name("logbox")
-        print(logbox)
+    def store_reply(self):
+        self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
 
     def get_last_input(self):
-        return self.bot.find_elements_by_class_name("logitem")[-1].text
+        return self.log_history[-1].text
 
     def is_human(self):
+        if type_speed(self.get_last_input(), self.type_time()) > 12.5:
+            return False
+        else:
+            return True
 
+    def type_time(self):
+        if self.get_last_input() == "Stranger is typing":
+            time_start = time.time()
+        if self.get_last_input() != "Stranger is typing":
+            time_end = time.time()
+        return time_end - time_start
 
     def communicate:
 
@@ -42,7 +51,6 @@ def type_speed(message, time):
 
 def timer
 
-statuslog
 def is_typing():
 
 connected = True
