@@ -41,7 +41,11 @@ class OhmBot:
                 type_time = self.type_time(time_start)
 
 
-
+    def send_message(self, message):
+        chatBox = self.bot.find_element_by_tag_name('textarea')
+        chatBox.send_keys(message + '\n')
+        
+                
     def identify_predator():
         pass
 
