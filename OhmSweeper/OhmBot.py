@@ -9,10 +9,15 @@ class OhmBot:
     def __init__(self):
         self.bot = webdriver.Chrome(ChromeDriverManager().install())
         self.log_history = []
-
+    #Stranger is typing...
     def store_reply(self):
-        if self.log_history[-1] != self.bot.find_elements_by_class_name("logitem")[-1].text:
+        if len(self.log_history) > 1:
+            if self.log_history[-1] != self.bot.find_elements_by_class_name("logitem")[-1].text:
+                self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
+                #print(self.log_history[-1])
+        else:
             self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
+            #print(self.log_history[-1])
 
     def get_last_input(self):
         return self.log_history[-1]
@@ -29,16 +34,33 @@ class OhmBot:
         return time_end - time1
 
     def wait_for_message(self):
-        while self.log_history[-2] != "Stranger is typing":
-            pass
-        time.sleep(2)
+        while self.log_history[-1][:3] == "You" or self.log_history[-1] == "Stranger is typing...":
+            self.store_reply()
+            time.sleep(1)
+            if self.log_history[-1][:3]!= "You" and self.log_history[-1]!= "Stranger is typing...":
+                print(self.log_history[-1])
+                break
+        self.communicate()
+
+
 
     def communicate(self):
-        while not self.chat_is_over():
-            current_message = self.bot.find_elements_by_class_name("logitem")[-1].text
-            if current_message == "Stranger is typing":
-                time_start = float(time.time())
-                type_time = self.type_time(time_start)
+        #Need to check whether if over or not
+        #Also, I'm having a problem with when
+        #They respond right away like I can't log both responses
+        #So this needs to be fixed
+        time.sleep(1.5)
+        self.store_reply()
+        if self.log_history[-1] == "Stranger is typing...":
+            time.sleep(3)
+            self.store_reply()
+            print(self.log_history[-1])
+        try:
+            message = input("Enter message\n")
+            bot.send_message(message)
+        except:
+            self.newchat()
+            
 
 
     def send_message(self, message):
@@ -70,14 +92,13 @@ class OhmBot:
         
         
         
-        
-
 bot = OhmBot()
 bot.newchat()
 while True:
+    bot.store_reply()
     time.sleep(1)
     if (bot.chat_is_over() == True):
         bot.newchat()
-    message = input("Enter message")
-    bot.communicate(message)
+    bot.wait_for_message()
     
+        

@@ -1,7 +1,7 @@
-from OhmSweeper import OhmSweeper
+import OhmBot as Ohm
 
 
-ch = OhmSweeper.OhmBot()
+ch = Ohm.OhmBot()
 ch.newchat()
 ch.communicate()
 ch.newchat()
