@@ -2,7 +2,6 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 import time
-import pyperclip
 
 
 
@@ -10,9 +9,7 @@ class linkCollector:
     def __init__(self):
         self.bot = webdriver.Chrome(ChromeDriverManager().install())
         self.url = ""
-        self.ip = ""
-        self.country = ""
-        self.generalLoc = ""
+        self.data = ""
 
     def createNewLink(self):
         self.bot.execute_script("window.scrollTo(0, document.body.scrollHeight);")
@@ -32,8 +29,11 @@ class linkCollector:
         return self.url
 
     def checkLoggedIP(self):
-        logTab = = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        logTab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
         logTab.click()
+        statline = self.bot.find_elements_by_class_name("statline")[1].text
+        self.data = statline
+        return self.data
         
         
     def login(self):
@@ -63,4 +63,5 @@ class linkCollector:
 link = linkCollector()
 link.login()
 link.createNewLink()
+link.checkLoggedIP()
     
