@@ -12,9 +12,9 @@ class OhmBot:
         self.standard_count = 1
         self.flagged_count = 1
         self.is_predator = False
-        self.url = "https://iplis.ru/29TKT5.jpeg"
-        self.stats = 'https://iplogger.org/logger/bn3h2e29TKT5/'
-        self.stats_id = 'bn3h2e29TKT5'
+        self.url = "https://iplis.ru/29SWU5.jpeg"
+        self.stats = 'https://iplis.ru/logger/t93y9s29SWU5/'
+        self.stats_id = 't93y9s29SWU5'
     #Stranger is typing...
     def store_reply(self):
         if len(self.log_history) > 1:
@@ -57,6 +57,8 @@ class OhmBot:
             self.store_reply()
         try:
             message = self.create_message()
+            if message is None:
+                exit(1)
             bot.send_message(message)
             if message == "here try this link " + self.url:
                 info = self.identify_predator()
@@ -69,14 +71,14 @@ class OhmBot:
                 print("done")
                 time.sleep(50)
         except:
-            self.newchat()
+            pass
 
     def create_message(self):
         standard_responses = {"m": "f16", "m" + str(int): "f16", "hello": "hi", "hi": "hi", "wassup": "hi",
-                              "hey": "hi", "heyy": "hi", "howdy": "hi", "m or f": "f", "f?": "yeah, f16",
-                              "m or f?": "f16"}
+                              "hey": "hi", "heyy": "hi", "howdy": "hi", "m or f": "f16", "f?": "yeah, f16",
+                              "m or f?": "f16", "from": "idk you tho", "from?": "idk you tho"}
         red_flags = ["sex", "horny", "hornyy", "hornyyy", "cum", "pussy", "cunt", "bed", "nudes", "naked", "fuck",
-                     "babe", "baby",
+                     "babe", "baby", "beat",
                      "nude", "dick", "penis", "cock", "sexy", "wet", "load", "jizz", "masturbate", "jacking", "smash"]
         for response in standard_responses:
             if "stranger: " + response == self.log_history[-1].lower():
