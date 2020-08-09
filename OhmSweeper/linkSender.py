@@ -34,7 +34,25 @@ class linkCollector:
         statline = self.bot.find_elements_by_class_name("statline")[1].text
         self.data = statline
         return self.data
-        
+
+    def refresh(self):
+        refreshButton = self.bot.find_element_by_xpath("//div[@name='refresh']")
+        refreshButton.click()
+
+    def history(self):
+        logTab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        logTab.click()
+        statline = self.bot.find_elements_by_class_name("statline")
+        #print(statline)
+        info = []
+        for i in statline:
+            try:
+                print(i.text)
+                time.sleep(1)
+                info.append(i.text)
+            except:
+                pass
+        print(info)
         
     def login(self):
         self.bot.get("https://iplogger.org/")
@@ -64,4 +82,6 @@ link = linkCollector()
 link.login()
 link.createNewLink()
 link.checkLoggedIP()
+time.sleep(5)
+link.history()
     
