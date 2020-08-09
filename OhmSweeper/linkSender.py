@@ -31,18 +31,24 @@ class LinkCollector:
     def get_history(self):
         log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
         log_tab.click()
-        for data in self.bot.find_elements_by_class_name("statline"):
-            self.data_history.append(data.text)
+        for i in range(len(self.bot.find_elements_by_class_name("statline"))):
+            self.data_history.append(self.bot.find_elements_by_class_name("statline")[i].text)
 
     def get_data(self):
         log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
         log_tab.click()
         stat_line = self.bot.find_elements_by_class_name("statline")[1].text
-        while stat_line in self.data_history:
-            pass
+        '''while stat_line in self.data_history:
+            self.refresh()
+            stat_line = self.bot.find_elements_by_class_name("statline")[1].text
+            pass'''
         self.data = stat_line
         self.data_history.append(self.data)
         return self.data
+
+    def refresh(self):
+        refresh_button = self.bot.find_element_by_xpath("//div[@name='refresh']")
+        refresh_button.click()
 
     def login(self):
         self.bot.get("https://iplogger.org/")

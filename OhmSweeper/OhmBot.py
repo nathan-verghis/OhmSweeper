@@ -14,7 +14,7 @@ class OhmBot:
         self.flagged_count = 1
         self.is_predator = False
         self.ip_logger = ls
-        self.url = ls.create_new_link()
+        self.url = ls.url
     # Stranger is typing...
 
     def store_reply(self):
@@ -70,7 +70,7 @@ class OhmBot:
                               "hey": "hi", "heyy": "hi", "howdy": "hi", "m or f": "f16", "f?": "yeah, f16",
                               "m or f?": "f16", "from": "idk you tho", "from?": "idk you tho"}
         red_flags = ["sex", "horny", "hornyy", "hornyyy", "cum", "pussy", "cunt", "bed", "nudes", "naked", "fuck",
-                     "babe", "baby", "beat", "snap"
+                     "babe", "baby", "beat", "snap", "erect",
                      "nude", "dick", "penis", "cock", "sexy", "wet", "load", "jizz", "masturbate", "jacking", "smash"]
         for response in standard_responses:
             if "stranger: " + response == self.log_history[-1].lower():
@@ -136,7 +136,8 @@ x = 0
 while x < 10:
     ip_logger = LinkCollector()
     ip_logger.login()
-    ip_logger.get_history()
+    ip_logger.create_new_link()
+    '''ip_logger.get_history()'''
     bot = OhmBot(ip_logger)
     bot.new_chat()
     while True:
