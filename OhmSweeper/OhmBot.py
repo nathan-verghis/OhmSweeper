@@ -16,43 +16,55 @@ class OhmBot:
         self.link = ""
 
     def store_reply(self):
-        if len(self.log_history) > 2:
+        if len(self.log_history) >= 1:
             if self.log_history[-1] != self.bot.find_elements_by_class_name("logitem")[-1].text and\
-                    self.bot.find_elements_by_class_name("logitem")[-1].text != 'Stranger is typing...':
+                    self.bot.find_elements_by_class_name("logitem")[-1].text != 'Stranger is typing...' and\
+                    self.bot.find_elements_by_class_name("logitem")[-1].text != \
+                    "You're now chatting with a random stranger. Say STAND WITH HONG KONG AGAINST THE CCP!":
                 self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
         else:
-            self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
+            if self.bot.find_elements_by_class_name("logitem")[-1].text != 'Stranger is typing...' and\
+                    self.bot.find_elements_by_class_name("logitem")[-1].text != \
+                    "You're now chatting with a random stranger. Say STAND WITH HONG KONG AGAINST THE CCP!":
+                self.log_history.append(self.bot.find_elements_by_class_name("logitem")[-1].text)
 
     def get_last_input(self):
         return self.log_history[-1]
 
     def wait_for_message(self):
         print(len(self.log_history))
-        if len(self.log_history) > 2:
+        if len(self.log_history) > 1:
+            log_length = len(self.log_history)
             while self.bot.find_elements_by_class_name("statuslog"):
                 self.store_reply()
+                print(log_length, end=" ")
+                print(len(self.log_history))
+                if log_length < len(self.log_history):
+                    break
+                print(self.log_history)
                 pass
         else:
-            while len(self.log_history) < 2:
+            while len(self.log_history) < 1:
                 self.store_reply()
+                print(self.log_history)
+                print("YAAAA")
                 pass
 
     def communicate(self):
         while not self.chat_is_over():
             self.wait_for_message()
-            print(self.log_history)
             self.store_reply()
-            time.sleep(2)
-            print("yeah")
+            time.sleep(3)
             if self.is_predator():
                 response = self.predator_response()
                 self.send_message(response)
-                if self.dirty_response_counter > 3:
+                if self.dirty_response_counter > 4:
                     break
             else:
                 response = self.calculate_response()
                 self.send_message(response)
-                if self.clean_response_counter > 2:
+                print("yeah")
+                if self.clean_response_counter > 4:
                     break
 
     def identify_predator(self):
@@ -89,13 +101,19 @@ class OhmBot:
                               "age": str(random_age) + " hbu", "from": "idk you tho", "wyd": "nm hbu"}
         for sq in standard_questions:
             if sq in self.get_last_input().lower():
+                '''if sq == "m" and \
+                        (self.get_last_input().lower() != "m" or self.get_last_input().lower() != "m" + str(int)):
+                    pass
+                else:'''
                 return standard_questions[sq]
         self.clean_response_counter += 1
         if self.clean_response_counter == 1:
-            return "so wyd"
+            return "hi"
         if self.clean_response_counter == 2:
-            return "lol same xD"
+            return "so wyd"
         if self.clean_response_counter == 3:
+            return "lol same xD"
+        if self.clean_response_counter == 4:
             return "lol, i gtg"
 
     def upload_predator(self):
