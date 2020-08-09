@@ -27,7 +27,14 @@ class linkCollector:
         ext = self.bot.find_element_by_xpath("//option[@value='jpg']")
         ext.click()
         copyButton = self.bot.find_element_by_xpath("//input[@id='fromfirst']")
+        #STORES THE LINK IN SELF.URL
         self.url = copyButton.get_attribute("data-clipboard-text")
+        return self.url
+
+    def checkLoggedIP(self):
+        logTab = = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        logTab.click()
+        
         
     def login(self):
         self.bot.get("https://iplogger.org/")
