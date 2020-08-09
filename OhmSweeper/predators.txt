@@ -1,0 +1,55 @@
+Time IP address/Provider Country/City Map Device Refering pages
+Time IP address/Provider Country/City Map Device Refering pages
+09.08.2020
+16:43:19 84.104.83.170
+Vodafone Ziggo Netherlands
+Driemanspolder Android
+Samsung Browser didn’t send referrer data
+
+09.08.2020
+15:57:16 24.157.87.233
+Cogeco Communications Inc. Canada
+Halton Hills (Georgetown) Windows
+Chrome Browser didn’t send referrer data
+
+09.08.2020
+15:50:10 122.175.223.195
+Bharti Airtel India
+Bhopal (Roshanpura) Android
+UC Browser didn’t send referrer data
+
+09.08.2020
+15:49:01 122.175.223.195
+Bharti Airtel India
+Bhopal (Roshanpura) Android
+UC Browser didn’t send referrer data
+
+09.08.2020
+14:57:38 24.150.186.180
+Cogeco Communications Inc. Canada
+Ottawa Mac
+Chrome Browser didn’t send referrer data
+
+09.08.2020
+14:52:20 24.157.87.233
+Cogeco Communications Inc. Canada
+Halton Hills (Georgetown) Windows
+Chrome Browser didn’t send referrer data
+
+09.08.2020
+14:52:05 35.237.4.214
+Google LLC United States
+North Charleston bot
+unknown Browser didn’t send referrer data
+
+09.08.2020
+13:00:30 24.157.87.233
+Cogeco Communications Inc. Canada
+Halton Hills (Georgetown) Windows
+Chrome Browser didn’t send referrer data
+
+09.08.2020
+13:00:25 35.227.62.178
+Google LLC United States
+North Charleston bot
+unknown Browser didn’t send referrer data

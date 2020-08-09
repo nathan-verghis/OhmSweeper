@@ -4,46 +4,69 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-
-class linkCollector:
+class LinkCollector:
     def __init__(self):
         self.bot = webdriver.Chrome(ChromeDriverManager().install())
         self.url = ""
         self.data = ""
+        self.data_history = []
 
-    def createNewLink(self):
+    def create_new_link(self):
         self.bot.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-        infoTab = self.bot.find_element_by_xpath("//span[text()='Information about IPLogger']")
-        infoTab.click()
-        changeDomain = self.bot.find_element_by_xpath("//select[@id='choosesite']")
-        changeDomain.click()
+        info_tab = self.bot.find_element_by_xpath("//span[text()='Information about IPLogger']")
+        info_tab.click()
+        change_domain = self.bot.find_element_by_xpath("//select[@id='choosesite']")
+        change_domain.click()
         domain = self.bot.find_element_by_xpath("//option[@value='02ip.ru']")
         domain.click()
-        changeExt = self.bot.find_element_by_xpath("//select[@id='chooseext']")
-        changeExt.click()
+        change_ext = self.bot.find_element_by_xpath("//select[@id='chooseext']")
+        change_ext.click()
         ext = self.bot.find_element_by_xpath("//option[@value='jpg']")
         ext.click()
-        copyButton = self.bot.find_element_by_xpath("//input[@id='fromfirst']")
-        #STORES THE LINK IN SELF.URL
-        self.url = copyButton.get_attribute("data-clipboard-text")
+        copy_button = self.bot.find_element_by_xpath("//input[@id='fromfirst']")
+        # STORES THE LINK IN SELF.URL
+        self.url = copy_button.get_attribute("data-clipboard-text")
         return self.url
 
-    def checkLoggedIP(self):
+    def get_history(self):
+        '''log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        log_tab.click()
+        return range(len(self.bot.find_elements_by_class_name("statline")))'''
         logTab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
         logTab.click()
-        statline = self.bot.find_elements_by_class_name("statline")[1].text
-        self.data = statline
+        statline = self.bot.find_elements_by_class_name("statline")
+        # print(statline)
+        info = []
+        for i in statline:
+            try:
+                print(i.text)
+                time.sleep(1)
+                info.append(i.text)
+            except:
+                pass
+        self.data_history = info
+
+    def get_data(self):
+        log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        log_tab.click()
+        stat_line = self.bot.find_elements_by_class_name("statline")[1].text
+        while stat_line in self.data_history:
+            self.refresh()
+            stat_line = self.bot.find_elements_by_class_name("statline")[1].text
+            pass
+        self.data = stat_line
+        self.data_history.append(self.data)
         return self.data
-    
+
     def refresh(self):
-        refreshButton = self.bot.find_element_by_xpath("//div[@name='refresh']")
-        refreshButton.click()
-        
-        
+        time.sleep(2)
+        refresh_button = self.bot.find_element_by_xpath("//div[@name='refresh']")
+        refresh_button.click()
+
     def login(self):
         self.bot.get("https://iplogger.org/")
-        signIn = self.bot.find_element_by_xpath("//div[@class='mLogin']")
-        signIn.click()
+        sign_in = self.bot.find_element_by_xpath("//div[@class='mLogin']")
+        sign_in.click()
         email = self.bot.find_element_by_xpath("//input[@id='lusername']")
         email.click()
         email.send_keys("nbverghis@gmail.com")
@@ -54,18 +77,18 @@ class linkCollector:
         loggers = self.bot.find_element_by_xpath("//span[@class='dropmenu' and text()=' Your IPLoggers']")
         loggers.click()
         time.sleep(2)
-        myLogger = self.bot.find_element_by_xpath("//a[text()=' IPLoggers in your account [1]']")
-        myLogger.click()
+        my_logger = self.bot.find_element_by_xpath("//a[text()=' IPLoggers in your account [1]']")
+        my_logger.click()
         time.sleep(2)
-        myLogger = self.bot.find_element_by_xpath("//a[text()='Shortened URL']")
-        myLogger.click()
+        my_logger = self.bot.find_element_by_xpath("//a[text()='Shortened URL']")
+        my_logger.click()
         self.bot.find_element_by_tag_name('body').send_keys(Keys.COMMAND + Keys.TAB)
         time.sleep(2)
         self.bot.switch_to.window(self.bot.window_handles[1])
-        
-        
-link = linkCollector()
+
+
+'''link = LinkCollector()
 link.login()
-link.createNewLink()
-link.checkLoggedIP()
+link.create_new_link()
+link.check_logged_ip()'''
 

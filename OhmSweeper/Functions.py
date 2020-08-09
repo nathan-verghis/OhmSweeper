@@ -1,14 +1,14 @@
 from selenium import webdriver
-def type_speed(message, time):
-    length = len(message)
-    cpm = length/time
-    return cpm
 
-def is_typing(OhmBot):
-    log = []
-    for x in OhmBot.bot.find_elements_by_class_name("statuslog"):
-        log.append(x.text)
-    if("Stranger is typing...") in log:
-        return True
-    else:
-        return False
+
+def identify_predator(ip_logger):
+    return ip_logger.get_data()
+
+
+def upload_predator(info, log):
+    file = open("predators.txt", "a")
+    file.write(info + "\n")
+    for entry in log:
+        file.write(entry)
+    file.write("\n\n")
+    file.close()
