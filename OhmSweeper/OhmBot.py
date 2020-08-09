@@ -2,7 +2,7 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from OhmSweeper.OhmSweeper.Functions import *
-from OhmSweeper.OhmSweeper.linkSender import LinkSender
+from OhmSweeper.OhmSweeper.linkSender import LinkCollector
 import time
 
 
@@ -14,7 +14,7 @@ class OhmBot:
         self.flagged_count = 1
         self.is_predator = False
         self.ip_logger = ls
-        self.url = ls.get_url()
+        self.url = ls.create_new_link()
     # Stranger is typing...
 
     def store_reply(self):
@@ -56,10 +56,9 @@ class OhmBot:
             bot.send_message(message)
             if message == "here try this link " + self.url:
                 info = identify_predator(self.ip_logger)
-                ip_address = info[0]
+                print(info)
                 upload_predator(info, self.log_history)
-                bot.send_message("Thank you for your time " + ip_address +
-                                 ". You will be exposed. This has been OhmBot :)")
+                bot.send_message("Thank you for your time:)")
             if self.standard_count == 5 or self.flagged_count == 6:
                 print("done")
                 time.sleep(50)
@@ -71,7 +70,7 @@ class OhmBot:
                               "hey": "hi", "heyy": "hi", "howdy": "hi", "m or f": "f16", "f?": "yeah, f16",
                               "m or f?": "f16", "from": "idk you tho", "from?": "idk you tho"}
         red_flags = ["sex", "horny", "hornyy", "hornyyy", "cum", "pussy", "cunt", "bed", "nudes", "naked", "fuck",
-                     "babe", "baby", "beat",
+                     "babe", "baby", "beat", "snap"
                      "nude", "dick", "penis", "cock", "sexy", "wet", "load", "jizz", "masturbate", "jacking", "smash"]
         for response in standard_responses:
             if "stranger: " + response == self.log_history[-1].lower():
@@ -114,8 +113,8 @@ class OhmBot:
                 return "here try this link " + self.url
 
     def send_message(self, message):
-        chatBox = self.bot.find_element_by_tag_name('textarea')
-        chatBox.send_keys(message + '\n')
+        chat_box = self.bot.find_element_by_tag_name('textarea')
+        chat_box.send_keys(message + '\n')
 
     def chat_is_over(self):
         possible_endings = \
@@ -126,18 +125,20 @@ class OhmBot:
         else:
             return False
 
-    def newchat(self):
+    def new_chat(self):
         self.bot.get("https://www.omegle.com/")
-        textButton = self.bot.find_element_by_xpath("//img[@id='textbtn']")
-        textButton.click()
+        text_button = self.bot.find_element_by_xpath("//img[@id='textbtn']")
+        text_button.click()
         time.sleep(3)
 
 
-x = 10
+x = 0
 while x < 10:
-    ip_logger = LinkSender()
+    ip_logger = LinkCollector()
+    ip_logger.login()
+    ip_logger.get_history()
     bot = OhmBot(ip_logger)
-    bot.newchat()
+    bot.new_chat()
     while True:
         bot.store_reply()
         time.sleep(1)
