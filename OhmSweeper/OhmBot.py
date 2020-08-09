@@ -56,9 +56,7 @@ class OhmBot:
             bot.send_message(message)
             if message == "here try this link " + self.url:
                 info = identify_predator(self.ip_logger)
-                print(info)
                 upload_predator(info, self.log_history)
-                bot.send_message("Thank you for your time:)")
             if self.standard_count == 5 or self.flagged_count == 6:
                 print("done")
                 time.sleep(50)
@@ -70,7 +68,7 @@ class OhmBot:
                               "hey": "hi", "heyy": "hi", "howdy": "hi", "m or f": "f16", "f?": "yeah, f16",
                               "m or f?": "f16", "from": "idk you tho", "from?": "idk you tho"}
         red_flags = ["sex", "horny", "hornyy", "hornyyy", "cum", "pussy", "cunt", "bed", "nudes", "naked", "fuck",
-                     "babe", "baby", "beat", "snap", "erect",
+                     "babe", "baby", "beat", "snap", "erect", "masturbating",
                      "nude", "dick", "penis", "cock", "sexy", "wet", "load", "jizz", "masturbate", "jacking", "smash"]
         for response in standard_responses:
             if "stranger: " + response == self.log_history[-1].lower():
@@ -137,7 +135,7 @@ while x < 10:
     ip_logger = LinkCollector()
     ip_logger.login()
     ip_logger.create_new_link()
-    '''ip_logger.get_history()'''
+    ip_logger.get_history()
     bot = OhmBot(ip_logger)
     bot.new_chat()
     while True:

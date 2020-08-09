@@ -29,24 +29,37 @@ class LinkCollector:
         return self.url
 
     def get_history(self):
-        log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        '''log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
         log_tab.click()
-        for i in range(len(self.bot.find_elements_by_class_name("statline"))):
-            self.data_history.append(self.bot.find_elements_by_class_name("statline")[i].text)
+        return range(len(self.bot.find_elements_by_class_name("statline")))'''
+        logTab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
+        logTab.click()
+        statline = self.bot.find_elements_by_class_name("statline")
+        # print(statline)
+        info = []
+        for i in statline:
+            try:
+                print(i.text)
+                time.sleep(1)
+                info.append(i.text)
+            except:
+                pass
+        self.data_history = info
 
     def get_data(self):
         log_tab = self.bot.find_element_by_xpath("//span[text()='Logged IP’s']")
         log_tab.click()
         stat_line = self.bot.find_elements_by_class_name("statline")[1].text
-        '''while stat_line in self.data_history:
+        while stat_line in self.data_history:
             self.refresh()
             stat_line = self.bot.find_elements_by_class_name("statline")[1].text
-            pass'''
+            pass
         self.data = stat_line
         self.data_history.append(self.data)
         return self.data
 
     def refresh(self):
+        time.sleep(2)
         refresh_button = self.bot.find_element_by_xpath("//div[@name='refresh']")
         refresh_button.click()
 
