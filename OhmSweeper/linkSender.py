@@ -34,6 +34,10 @@ class linkCollector:
         statline = self.bot.find_elements_by_class_name("statline")[1].text
         self.data = statline
         return self.data
+    
+    def refresh(self):
+        refreshButton = self.bot.find_element_by_xpath("//div[@name='refresh']")
+        refreshButton.click()
         
         
     def login(self):
